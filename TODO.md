@@ -1,5 +1,0 @@
-- [] token usage counter, also costs calculation based of model
-- [] prepare model retrain pipeline for poorly classified reviews
-- [] add caching and saving mechanism to DB
-- [] test coverage
-- [] monitoring demo setup
