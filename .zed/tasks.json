@@ -1,0 +1,35 @@
+[
+  {
+    "label": "App + DB: build and run",
+    "shell": "system",
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "use_new_terminal": false,
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "never",
+    "reveal_target": "center",
+    "command": "docker rm -f rev_analyzer; docker rm -f rev_analyzer_db; docker rm -f rev_analyzer_ollama; docker compose up --force-recreate --build",
+    "env": {
+      "DOCKER_BUILDKIT": "1",
+      "DOCKER_DEFAULT_PLATFORM": "linux/amd64"
+    }
+  },
+
+  {
+    "label": "Only app: build and run",
+    "shell": "system",
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "use_new_terminal": false,
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "hide": "never",
+    "reveal_target": "center",
+    "command": "docker rm -f rev_analyzer; docker rm -f rev_analyzer_db; docker compose up --force-recreate --build rev_analyzer -e MONGO_CONNECTION=$MONGO",
+    "env": {
+      "DOCKER_BUILDKIT": "1",
+      "DOCKER_DEFAULT_PLATFORM": "linux/amd64",
+      // provide external DB address here:
+      "MONGO": "mongodb://192.168.1.100:27017/"
+    }
+  }
+]
