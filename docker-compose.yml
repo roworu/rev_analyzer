@@ -1,0 +1,60 @@
+services:
+  
+  rev_analyzer:
+    container_name: rev_analyzer
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_CONNECTION=mongodb://rev_analyzer_db:27017
+      - OLLAMA_API_URL=http://rev_analyzer_ollama:11434
+      - OLLAMA_MODEL=gemma3:1b
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - rev_analyzer_db
+      - rev_analyzer_ollama
+    restart: unless-stopped
+
+  rev_analyzer_db:
+    container_name: rev_analyzer_db
+    image: mongo:8.0
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    restart: unless-stopped
+    
+  rev_analyzer_ollama:
+    container_name: rev_analyzer_ollama
+    image: ollama/ollama:latest
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_KEEP_ALIVE=24h
+    volumes:
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+    
+    # uncomment if you have Nvidia GPU:
+    #deploy:
+    #  resources:
+    #    reservations:
+    #      devices:
+    #        - driver: nvidia
+    #          count: all 
+    #          capabilities: [gpu]
+          
+          
+    # you can specify different models to pull here, for example
+    # deepseek-r1:7b , deepseek-r1:1.5b
+    # gemma3:1b , gemma3:4b
+    # qwen3:1.7b , qwen3:4b , qwen3:8b , qwen3:14b
+    # llama3.1:8b , llama3.2:3b , llama3.2:3b
+    entrypoint: >
+      sh -c "
+        ollama serve &
+        ollama pull gemma3:1b &&
+        wait
+      "
+
+volumes:
+  mongo_data:
+  ollama_models:

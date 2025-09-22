@@ -1,0 +1,5 @@
+- [] token usage counter
+- [] prepare retrain pipeline for poorly classified reviews
+- [] add lightweight tags/highlights extraction mechanism
+- [] add endpoint for checking product reviews/tags/hightlight
+- [] add caching and saving mechanism to DB
