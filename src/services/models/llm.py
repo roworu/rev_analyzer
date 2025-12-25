@@ -37,7 +37,7 @@ def _pick_llm_provider(specified: str | None) -> str:
 
 def build_classification_prompt(text: str) -> str:
     return (
-        "You are an assistant analyzing product reviews.\n\n"
+        "You are an assistant analyzing product reviews.\n"
         "Return a JSON object with fields:\n"
         "- grade: integer from 1 to 10, user satisfaction\n"
         "- confidence: float from 0 to 1, your confidence in grade\n"
@@ -53,6 +53,8 @@ def _openai_call(prompt: str, schema: dict | None) -> str | dict:
         model=OPENAI_MODEL,
         messages=[{"role": "user", "content": prompt}],
         response_format={"type": "json_object"} if schema else None,
+        temperature=0.4
+        
     )
     content = resp.choices[0].message.content or ""
     if schema:
