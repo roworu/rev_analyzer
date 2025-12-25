@@ -76,7 +76,7 @@ def _run_summary(prompt: str) -> str | None:
         "- If the provided content is empty or insufficient, return exactly 'NONE'.\n\n"
         f"{prompt}"
     )
-    result = completion(final_prompt, schema=None, provider=None)
+    result = completion(final_prompt, schema=None)
     text = str(result).strip()
     return None if text.upper() == "NONE" else text
 
