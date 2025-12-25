@@ -62,6 +62,5 @@ def classify(user_texts: dict[str, str], threshold: float | None,
 
     return {
         "product_id": product_id,
-        "threshold": threshold,
         "results": results,
     }
