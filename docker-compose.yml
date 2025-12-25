@@ -17,7 +17,7 @@ services:
 
   rev_analyzer_db:
     container_name: rev_analyzer_db
-    image: mongo:8.0
+    image: mongo:latest
     volumes:
       - mongo_data:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
@@ -34,26 +34,14 @@ services:
     restart: unless-stopped
     
     # uncomment if you have Nvidia GPU:
-    #deploy:
-    #  resources:
-    #    reservations:
-    #      devices:
-    #        - driver: nvidia
-    #          count: all 
-    #          capabilities: [gpu]
-          
-          
-    # you can specify different models to pull here, for example
-    # deepseek-r1:7b , deepseek-r1:1.5b
-    # gemma3:1b , gemma3:4b
-    # qwen3:1.7b , qwen3:4b , qwen3:8b , qwen3:14b
-    # llama3.1:8b , llama3.2:3b , llama3.2:3b
-    entrypoint: >
-      sh -c "
-        ollama serve &
-        ollama pull gemma3:1b &&
-        wait
-      "
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all 
+              capabilities: [gpu]
+
 
 volumes:
   mongo_data:
